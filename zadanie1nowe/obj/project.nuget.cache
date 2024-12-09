@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "EH+4N/WXdjM=",
+  "success": true,
+  "projectFilePath": "/home/adamz/Documents/Studia/ED/zadanie1nowe/zadanie1nowe/zadanie1nowe.csproj",
+  "expectedPackageFiles": [
+    "/home/adamz/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.10/microsoft.aspnetcore.app.ref.8.0.10.nupkg.sha512"
+  ],
+  "logs": []
+}

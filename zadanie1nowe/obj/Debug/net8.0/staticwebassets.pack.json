@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "/home/adamz/Documents/Studia/ED/zadanie1nowe/zadanie1nowe/obj/Debug/net8.0/scopedcss/projectbundle/zadanie1nowe.bundle.scp.css",
+      "PackagePath": "staticwebassets/zadanie1nowe.bundle.scp.css"
+    },
+    {
+      "Id": "/home/adamz/Documents/Studia/ED/zadanie1nowe/zadanie1nowe/wwwroot/app.css",
+      "PackagePath": "staticwebassets/app.css"
+    },
+    {
+      "Id": "/home/adamz/Documents/Studia/ED/zadanie1nowe/zadanie1nowe/wwwroot/bootstrap/bootstrap.min.css",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css"
+    },
+    {
+      "Id": "/home/adamz/Documents/Studia/ED/zadanie1nowe/zadanie1nowe/wwwroot/bootstrap/bootstrap.min.css.map",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css.map"
+    },
+    {
+      "Id": "/home/adamz/Documents/Studia/ED/zadanie1nowe/zadanie1nowe/wwwroot/favicon.png",
+      "PackagePath": "staticwebassets/favicon.png"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.zadanie1nowe.props",
+      "PackagePath": "build\\zadanie1nowe.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.zadanie1nowe.props",
+      "PackagePath": "buildMultiTargeting\\zadanie1nowe.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.zadanie1nowe.props",
+      "PackagePath": "buildTransitive\\zadanie1nowe.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.zadanie1nowe.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

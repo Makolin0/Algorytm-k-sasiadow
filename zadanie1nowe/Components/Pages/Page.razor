@@ -1,0 +1,208 @@
+@page "/"
+@rendermode InteractiveServer
+
+<div class="page">
+    <div class="menu">
+        <h1>Algorytm k-sąsiadów</h1>
+        <ol>
+            <li><label>Ilość sąsiadów</label><input @bind="k"/></li>
+            <li><label>Rodzaj metryki</label>
+                <select @bind="metric">
+                    <option value="0">Euklidesowa</option>
+                    <option value="1">Miejska</option>
+                </select>
+            </li>
+            <li><label>Głosowanie</label>
+                <select @bind="voting">
+                    <option value="0">Proste</option>
+                    <option value="1">Ważone</option>
+                </select>
+            </li>
+            <li><label>Wczytaj plik</label><div><InputFile OnChange="HandleFileUpload"  /></div></li>
+            <li><button @onclick="Clear">Wyczyść</button></li>
+        </ol>
+    </div>
+    <div class="canvas" @onclick="AddSquare">
+        @foreach (Data dot in Dots)
+        {
+            string color = getColor(dot.Value);
+            double x = dot.X - 15.0 / 9.0 / 2.0;
+            double y = dot.Y - 15.0 / 9.0 / 2.0;;
+            <div class="dot" style="bottom: @y%; left: @x%; background-color: @color"></div>
+        }
+        @foreach (Data square in Squares)
+        {
+            string color = getColor(square.Value);
+            double x = square.X - 15.0 / 9.0 / 2.0;
+            double y = square.Y - 15.0 / 9.0 / 2.0;
+            <div class="square" style="bottom: @y%; left: @x%; background-color: @color"></div>
+        }
+        @if (circle != null)
+        {
+            string className = metric == 0 ? "circle" : "diamond";
+            double size = metric == 0 ? circle.Item3 * 2.0 : circle.Item3 * 2.0 / 1.41;
+            // double size = 20;
+            double x = circle.Item1 - size / 2;
+            double y = circle.Item2 - size / 2;
+            <div class=@className style="bottom: @y%; left: @x%; width: @size%; height: @size%;"></div>
+        }
+    </div>
+</div>
+
+@code
+{
+    private class Data
+    {
+        public double X { get; set; }
+        public double Y { get; set; }
+        public int Value { get; set; }
+
+        public Data(double x, double y, int value)
+        {
+            X = x;
+            Y = y;
+            Value = value;
+
+        }
+    }
+
+    private List<Data> Dots = new List<Data>{new (0.0, 0.0, 0), new (11.0, 50.0, 2), new (30.0, 73.0, 4)};
+    private List<Data> Squares = new List<Data>{};
+    private int k = 3;
+    private int metric;
+    private int voting;
+
+    private Tuple<double, double, double>? circle = null;
+
+    private void Normalize()
+    {
+        double minX = Dots.Min(dot => dot.X);
+        double maxX = Dots.Max(dot => dot.X);
+        double minY = Dots.Min(dot => dot.Y);
+        double maxY = Dots.Max(dot => dot.Y);
+
+        maxX = maxX - minX;
+        maxY = maxY - minY;
+
+        foreach (Data dot in Dots)
+        {
+            dot.X = (dot.X - minX) / maxX * 100;
+            dot.Y = (dot.Y - minY) / maxY * 100;
+        }
+    }
+
+    private async Task AddSquare(MouseEventArgs e)
+    {
+        var x = e.OffsetX / 9;
+        var y = (900 - e.OffsetY) / 9;
+        
+        Squares.Add(new Data(x, y, CalculateType(x, y)));
+    }
+
+    private string getColor(int x)
+    {
+        switch (x)
+        {
+            case 0:
+                return "red";
+            case 1:
+                return "orangered";
+            case 2:
+                return "orange";
+            case 3:
+                return "yellow";
+            case 4:
+                return "yellowgreen";
+            default:
+                return "green";
+        }
+    }
+    
+    private async Task HandleFileUpload(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+
+        // Ensure the file isn't too large (e.g., 1 MB limit)
+        using var stream = file.OpenReadStream(maxAllowedSize: 1 * 1024 * 1024);
+        using var reader = new StreamReader(stream);
+
+        var tempData = new List<Data>{};
+
+        // Read the file line by line
+        string line;
+        while ((line = await reader.ReadLineAsync()) != null)
+        {
+            // Split the line by commas and parse into a double array
+            var values = line.Split(',').Select(double.Parse).ToArray();
+
+            // Ensure exactly 3 values per line
+            if (values.Length == 3)
+            {
+                tempData.Add(new Data(values[0], values[1], (int)values[2]));
+            }
+        }
+
+        // Save the parsed data to FileData
+        Dots = tempData;
+        
+        Normalize();
+    }
+
+    private void Clear()
+    {
+        Dots = new List<Data> { };
+        Squares = new List<Data> { };
+        circle = null;
+    }
+
+    private int CalculateType(double x, double y)
+    {
+        // find nearest circles
+        List<Tuple<int, double>> distances = new List<Tuple<int, double>> { };
+        int i = 0;
+
+        if (metric == 0)
+        {
+            // euklidesowa
+            foreach (Data dot in Dots)
+            {
+                double dist = double.Sqrt(Math.Pow(dot.X - x, 2) + Math.Pow(dot.Y - y, 2));
+                distances.Add(new Tuple<int, double>(i++, dist));
+            }
+        }
+        else
+        {
+            // miejska
+            foreach (Data dot in Dots)
+            {
+                double dist = double.Abs(dot.X - x) + double.Abs(dot.Y - y);
+                distances.Add(new Tuple<int, double>(i++, dist));
+            }
+        }
+        
+        distances.Sort((a, b) => a.Item2.CompareTo(b.Item2));
+
+        // look what's most popular
+        double[] valueCount = new double[6];
+        if (voting == 0)
+        {
+            for (i = 0; i < k; i++)
+            {
+                valueCount[Dots[distances[i].Item1].Value]++;
+            }
+        }
+        else
+        {
+            for (i = 0; i < k; i++)
+            {
+                double dist = distances[i].Item2;
+                valueCount[Dots[distances[i].Item1].Value] += 1.0 / Math.Pow(dist, 2.0);
+            }
+        }
+
+        double circleSize = distances[k - 1].Item2;
+        circle = new Tuple<double, double, double>(x, y, circleSize);
+
+        return Array.IndexOf(valueCount, valueCount.Max());
+    }
+}

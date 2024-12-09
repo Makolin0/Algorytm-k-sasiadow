@@ -1,0 +1,60 @@
+.page[b-a0lxxxx4ks] {
+    display: flex;
+    min-height: 100vh;
+
+    font-family: "Roboto", sans-serif;
+}
+.menu[b-a0lxxxx4ks] {
+    background-color: #0A2E36;
+    min-height: 100vh;
+    color: #eee;
+    padding: 1rem 2rem;
+}
+.menu h1[b-a0lxxxx4ks] {
+    padding-bottom: 2rem;
+}
+.menu ol[b-a0lxxxx4ks] {
+    list-style-type: none;
+    font-size: 1.2rem;
+}
+.menu li[b-a0lxxxx4ks] {
+    /*display: flex;*/
+    /*justify-content: space-between;*/
+    border-bottom: 1px solid #030F11;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+}
+.menu li:last-child[b-a0lxxxx4ks] {
+    border-bottom: none;
+}
+.menu button[b-a0lxxxx4ks] {
+    border: 2px solid #030F11;
+    background-color: #FFE047;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+}
+
+.canvas[b-a0lxxxx4ks] {
+    position: relative;
+    background-color: #ddd;
+    height: 900px;
+    width: 900px;
+    margin: 1rem 2rem;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.dot[b-a0lxxxx4ks], .square[b-a0lxxxx4ks], .circle[b-a0lxxxx4ks], .diamond[b-a0lxxxx4ks] {
+    position: absolute;
+    border: 0.15rem solid #222;
+}
+.dot[b-a0lxxxx4ks], .square[b-a0lxxxx4ks] {
+    width: 15px;
+    height: 15px;
+    background-color: darkviolet;
+}
+.dot[b-a0lxxxx4ks], .circle[b-a0lxxxx4ks] {
+    border-radius: 50%;
+}
+.diamond[b-a0lxxxx4ks] {
+    rotate: 45deg;
+}
